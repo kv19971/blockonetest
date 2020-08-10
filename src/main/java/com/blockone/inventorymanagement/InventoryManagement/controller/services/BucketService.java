@@ -68,7 +68,8 @@ public class BucketService {
 
     public double calculatePrice(String bucketId) {
         Bucket bucket = getBucket(bucketId);
-        return priceCalculatorService.calculatePrice(bucket);
+        double price = priceCalculatorService.calculatePrice(bucket);
+        return price;
     }
 
     public double checkout(String bucketId) {

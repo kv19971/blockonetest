@@ -16,7 +16,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataAccessException;
 
 import java.util.*;
-
+/* All abstract class' base methods are tested here. They perform the same for other DAOs
+ */
 class DiscountDaoTest {
 
     @Mock

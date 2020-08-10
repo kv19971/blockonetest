@@ -84,7 +84,6 @@ class BucketServiceTest {
         Mockito.when(discountDao.genericFindById(discount2.getId())).thenReturn(discount2);
 
         bucket = new Bucket("B1", new ArrayList<>(), new HashMap<>(), new HashMap<>());
-
         Mockito.when(bucketDao.genericFindById(bucket.getId())).thenReturn(bucket);
     }
 
@@ -92,6 +91,7 @@ class BucketServiceTest {
     void getBucketForNull() {
         Mockito.when(bucketDao.genericFindById(bucket.getId())).thenReturn(new Bucket(bucket.getId(), null, null, null));
         Bucket returnedBucket = bucketService.getBucket(bucket.getId());
+        Assertions.assertNotEquals(null, returnedBucket.getDiscountCoupons());
         Assertions.assertNotEquals(null, returnedBucket.getItems());
         Assertions.assertNotEquals(null, returnedBucket.getItems().get(ItemTypes.REGULAR));
         Assertions.assertNotEquals(null, returnedBucket.getItems().get(ItemTypes.DISCOUNTED));
@@ -101,12 +101,22 @@ class BucketServiceTest {
 
     @Test
     void getBucketPopulated() {
-        Bucket returnedBucket = bucketService.getBucket(bucket.getId());
+        List<String> list = new ArrayList<>();
+        list.add("test");
+        HashMap<String, Integer> map1 = new HashMap<>();
+        map1.put("A", 1);
+        HashMap<String, Integer> map2 = new HashMap<>();
+        map2.put("B", 1);
+        Bucket populatedBucket = new Bucket("NB", list, map1, map2);
+        Mockito.when(bucketDao.genericFindById(populatedBucket.getId())).thenReturn(populatedBucket);
+
+        Bucket returnedBucket = bucketService.getBucket(populatedBucket.getId());
+        Assertions.assertEquals(list, returnedBucket.getDiscountCoupons());
         Assertions.assertNotEquals(null, returnedBucket.getItems());
-        Assertions.assertNotEquals(null, returnedBucket.getItems().get(ItemTypes.REGULAR));
-        Assertions.assertNotEquals(null, returnedBucket.getItems().get(ItemTypes.DISCOUNTED));
-        Mockito.verify(bucketConstraints, Mockito.times(1)).checkIdConstraint(bucket.getId());
-        Mockito.verify(bucketDao, Mockito.times(1)).genericFindById(bucket.getId());
+        Assertions.assertEquals(map1, returnedBucket.getItems().get(ItemTypes.REGULAR));
+        Assertions.assertEquals(map2, returnedBucket.getItems().get(ItemTypes.DISCOUNTED));
+        Mockito.verify(bucketConstraints, Mockito.times(1)).checkIdConstraint(populatedBucket.getId());
+        Mockito.verify(bucketDao, Mockito.times(1)).genericFindById(populatedBucket.getId());
     }
 
     @Test

@@ -8,7 +8,6 @@ import com.blockone.inventorymanagement.InventoryManagement.model.dto.Bucket;
 import com.blockone.inventorymanagement.InventoryManagement.model.dto.Discount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -44,8 +43,7 @@ public class PriceCalculatorService {
         }
         return price;
     }
-
-    @Transactional
+    
     public double calculatePrice(Bucket bucket) throws InputException, DBException {
         double price = 0.0;
         for(Map<String, Integer> items : bucket.getItems().values()) {

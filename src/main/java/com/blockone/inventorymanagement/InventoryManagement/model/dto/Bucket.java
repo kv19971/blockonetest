@@ -21,7 +21,7 @@ public class Bucket extends ImBaseEntity{
         this.discountCoupons = discountCoupons;
         this.items = new EnumMap<>(ItemTypes.class);
         this.items.put(ItemTypes.REGULAR, items);
-        this.items.put(ItemTypes.DISCOUNTED, items); // this is done to ensure that discount coupon isnt applied twice to same bucket
+        this.items.put(ItemTypes.DISCOUNTED, discountedItems); // this is done to ensure that discount coupon isnt applied twice to same bucket
     }
 
     public Bucket() { }
